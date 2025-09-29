@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RunAfterInit {
 
-    private static final Logger logger = LoggerFactory.getLogger(EventListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(RunAfterInit.class);
 
     @Value("${server.port:8080}")
     private String serverPort;
