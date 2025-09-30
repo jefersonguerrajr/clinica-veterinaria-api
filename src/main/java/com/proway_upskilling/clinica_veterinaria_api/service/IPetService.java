@@ -1,7 +1,7 @@
 package com.proway_upskilling.clinica_veterinaria_api.service;
 
-import com.proway_upskilling.clinica_veterinaria_api.dtos.pet.PetRequestDTO;
-import com.proway_upskilling.clinica_veterinaria_api.dtos.pet.PetResponseDTO;
+import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetRequestDTO;
+import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;
 import org.springframework.data.domain.Page;
 
 public interface IPetService {

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,7 +24,7 @@ public class Pet {
     private String especie;
     private String raca;
     private Double peso;
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
     private Cliente dono;
     //private List<Consultas> consultas;
 
