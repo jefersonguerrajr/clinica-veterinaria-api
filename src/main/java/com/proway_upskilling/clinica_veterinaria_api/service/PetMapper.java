@@ -4,10 +4,12 @@ import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetRequestDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.Cliente;
 import com.proway_upskilling.clinica_veterinaria_api.model.Pet;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PetMapper {
 
-    public static Pet toEntity(PetRequestDTO dto, Cliente dono) {
+    public Pet toEntity(PetRequestDTO dto, Cliente dono) {
         Pet pet = new Pet();
         pet.setNome(dto.getNome());
         pet.setEspecie(dto.getEspecie());
@@ -18,7 +20,7 @@ public class PetMapper {
         return pet;
     }
 
-    public static PetResponseDTO toResponseDTO(Pet pet) {
+    public PetResponseDTO toResponseDTO(Pet pet) {
         PetResponseDTO dto = new PetResponseDTO();
         dto.setId(pet.getId());
         dto.setNome(pet.getNome());
