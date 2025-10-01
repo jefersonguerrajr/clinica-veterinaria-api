@@ -34,7 +34,7 @@ public class ClientController {
             @ApiResponse(responseCode = "200", description = "Cliente cadastrado"),
             @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
     })
-    public ResponseEntity<Cliente> searchClientById(@RequestParam(required = false) long id) {
+    public ResponseEntity<Cliente> searchClientById(@RequestParam long id) {
         return clientService.findClienteById(id);
     }
 

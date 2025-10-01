@@ -20,6 +20,7 @@ public class ClienteServiceImpl implements ClienteService {
         this.clienteRepository = userRepository;
     }
 
+    @Override
     public ResponseEntity<Cliente> findClienteById(long id){
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente com ID " + id + " não encontrado."));
