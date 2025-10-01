@@ -41,7 +41,7 @@ public class Pet {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente dono;
 
-    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Consulta> consultas = new ArrayList<>();
+//    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Consulta> consultas = new ArrayList<>();
 
 }
