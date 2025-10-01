@@ -1,4 +1,4 @@
-package com.proway_upskilling.clinica_veterinaria_api.dto;
+package com.proway_upskilling.clinica_veterinaria_api.model.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -26,4 +28,6 @@ public class VeterinarioDTO {
     @NotNull(message = "CRMV é obrigatório!")
     @Size(max = 13)
     private String crmv;
+
+    private LocalDate dataContratacao;
 }
