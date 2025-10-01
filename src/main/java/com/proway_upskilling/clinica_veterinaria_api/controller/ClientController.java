@@ -22,10 +22,10 @@ import java.util.List;
 @RequestMapping("/client")
 public class ClientController {
 
-    private final ClienteService userService;
+    private final ClienteService clientService;
 
     public ClientController(ClienteService clienteService) {
-        this.userService = clienteService;
+        this.clientService = clienteService;
     }
 
     @GetMapping
@@ -36,7 +36,7 @@ public class ClientController {
     })
     public ResponseEntity<Page<Cliente>> searchClients(@RequestParam(required = false) String nome,
                                                        @PageableDefault(size = 5, sort = "nome") Pageable pageable) {
-        return userService.searchClientByName(nome, pageable);
+        return clientService.searchClientByName(nome, pageable);
     }
 
     @PostMapping
@@ -51,7 +51,7 @@ public class ClientController {
             )
     })
     public ResponseEntity<Cliente> saveUser(@RequestBody @Valid ClienteDTO client) {
-        return userService.saveClient(client);
+        return clientService.saveClient(client);
     }
 
     @PutMapping
@@ -66,7 +66,7 @@ public class ClientController {
             )
     })
     public ResponseEntity<Cliente> editUser(@RequestBody Cliente client) {
-        return userService.editClient(client);
+        return clientService.editClient(client);
     }
 
     @DeleteMapping("/{clientId}")
@@ -85,7 +85,7 @@ public class ClientController {
             )
     })
     public ResponseEntity<Message> removeUser(@PathVariable long clientId) {
-        return userService.removeClient(clientId);
+        return clientService.removeClient(clientId);
     }
 
 }
