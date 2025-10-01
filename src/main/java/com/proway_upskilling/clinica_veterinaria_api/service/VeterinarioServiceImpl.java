@@ -1,16 +1,20 @@
 package com.proway_upskilling.clinica_veterinaria_api.service;
 
-import com.proway_upskilling.clinica_veterinaria_api.dto.VeterinarioDTO;
+import com.proway_upskilling.clinica_veterinaria_api.exception.ResourceNotFoundException;
+import com.proway_upskilling.clinica_veterinaria_api.model.Message;
 import com.proway_upskilling.clinica_veterinaria_api.model.Veterinario;
+import com.proway_upskilling.clinica_veterinaria_api.model.dto.VeterinarioDTO;
 import com.proway_upskilling.clinica_veterinaria_api.repository.VeterinarioRepository;
+import com.proway_upskilling.clinica_veterinaria_api.specification.VeterinarioSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
 
 @Service
-@Transactional
 public class VeterinarioServiceImpl implements VeterinarioService {
 
     private final VeterinarioRepository repository;
@@ -20,14 +24,12 @@ public class VeterinarioServiceImpl implements VeterinarioService {
     }
 
     private VeterinarioDTO toDto(Veterinario veterinario) {
-        if (veterinario == null) {
-            return null;
-        }
         return VeterinarioDTO.builder()
                 .id(veterinario.getId())
                 .especialiade(veterinario.getEspecialidade())
                 .crmv(veterinario.getCrmv())
                 .nome(veterinario.getNome())
+                .dataContratacao(veterinario.getDataContratacao())
                 .build();
     }
 
@@ -37,33 +39,65 @@ public class VeterinarioServiceImpl implements VeterinarioService {
                 .especialidade(dto.getEspecialiade())
                 .crmv(dto.getCrmv())
                 .nome(dto.getNome())
+                .dataContratacao(dto.getDataContratacao())
                 .build();
     }
 
     @Override
     public VeterinarioDTO create(VeterinarioDTO veterinarioDTO) {
-        Veterinario veterinario = toEntity(veterinarioDTO);
-        veterinario = repository.save(veterinario);
+
+        if (repository.existsByCrmv(veterinarioDTO.getCrmv())) {
+            throw new ResourceNotFoundException("CRMV já cadastrado!");
+        }
+
+        veterinarioDTO.setDataContratacao(LocalDate.now());
+        Veterinario veterinario = repository.save(toEntity(veterinarioDTO));
         return toDto(veterinario);
     }
 
     @Override
-    public List<VeterinarioDTO> findAll() {
-        return repository.findAll().stream().map(this::toDto).collect(Collectors.toList());
-    }
+    public ResponseEntity<Message> delete(long id) {
 
-    @Override
-    public void delete(long id) {
-        repository.deleteById(id);
+        Veterinario veterinario = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Veterinário com ID %s não encontrado!", id)));
+
+        repository.delete(veterinario);
+
+        return ResponseEntity.ok(Message.builder().title("Veterinário removido com sucesso.").build());
     }
 
     @Override
     public VeterinarioDTO findById(long id) {
-        return toDto(repository.findById(id).orElse(null));
+
+        Veterinario veterinario = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Veterinário com ID %s não encontrado!", id)));
+
+        return toDto(veterinario);
     }
 
     @Override
     public VeterinarioDTO save(VeterinarioDTO veterinarioDTO) {
         return toDto(repository.save(toEntity(veterinarioDTO)));
+    }
+
+    @Override
+    public Page<VeterinarioDTO> filterVeterinarios(String nome, String especialidade, String crmv, LocalDate dataContratacao, Pageable page) {
+
+        Specification<Veterinario> spec = Specification.anyOf();
+
+        spec = spec.and(VeterinarioSpecification.comNome(nome))
+                .and(VeterinarioSpecification.comEspecialidade(especialidade))
+                .and(VeterinarioSpecification.comCrmv(crmv))
+                .and(VeterinarioSpecification.comDataContratacao(dataContratacao));
+
+        Page<Veterinario> veterinarios = repository.findAll(spec, page);
+
+        return veterinarios.map(this::toDto);
+    }
+
+    @Override
+    public Page<VeterinarioDTO> findByDataContratacaoGreaterThanEqual(LocalDate dataContratacao, Pageable page) {
+        Page<Veterinario> veterinarios = repository.findVeterinarioByDataContratacaoGreaterThanEqual(dataContratacao, page);
+        return veterinarios.map(this::toDto);
     }
 }
