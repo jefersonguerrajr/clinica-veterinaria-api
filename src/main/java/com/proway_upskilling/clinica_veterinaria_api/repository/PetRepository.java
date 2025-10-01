@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Long>, JpaSpecificationExecutor<Pet> {
-    Page<Pet> findByDonoId(Long clienteId, Pageable pageable);
+    Page<Pet> findByClienteId(Long clienteId, Pageable pageable);
 }

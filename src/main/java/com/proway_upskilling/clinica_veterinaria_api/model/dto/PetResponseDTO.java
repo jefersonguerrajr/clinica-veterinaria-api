@@ -11,6 +11,7 @@ public class PetResponseDTO {
     private String especie;
     private String raca;
     private LocalDate dataNascimento;
+    private Double idade;
     private Double peso;
-    private Long donoId;
+    private Long clienteId;
 }

@@ -28,10 +28,10 @@ public class PetServiceImpl implements IPetService {
 
     @Override
     public PetResponseDTO create(PetRequestDTO petDTO) {
-        Cliente dono = clienteRepository.findById(petDTO.getDonoId())
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com id " + petDTO.getDonoId()));
+        Cliente cliente = clienteRepository.findById(petDTO.getClienteId())
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com id " + petDTO.getClienteId()));
 
-        Pet pet = petMapper.toEntity(petDTO, dono);
+        Pet pet = petMapper.toEntity(petDTO, cliente);
         Pet salvo = repository.save(pet);
         return petMapper.toResponseDTO(salvo);
     }
@@ -54,10 +54,10 @@ public class PetServiceImpl implements IPetService {
         Pet pet = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet não encontrado!"));
 
-        Cliente dono = clienteRepository.findById(petDTO.getDonoId())
+        Cliente cliente = clienteRepository.findById(petDTO.getClienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
-        PetMapper.updateEntity(pet, petDTO, dono);
+        PetMapper.updateEntity(pet, petDTO, cliente);
         Pet updatedPet = repository.save(pet);
         return petMapper.toResponseDTO(updatedPet);
     }
@@ -72,15 +72,17 @@ public class PetServiceImpl implements IPetService {
 
     @Override
     public Page<PetResponseDTO> findByCliente(Long clienteId, Pageable pageable) {
-        return repository.findByDonoId(clienteId,pageable)
+        return repository.findByClienteId(clienteId,pageable)
                 .map(petMapper::toResponseDTO);
     }
 
-    public Page<PetResponseDTO> search(String nome, String especie, String raca, Double peso, Pageable pageable){
+    @Override
+    public Page<PetResponseDTO> search(String nome, String especie, String raca, Double peso, Double idadeMin, Double idadeMax, Pageable pageable){
         Specification<Pet> spec = Specification.where(PetSpecification.hasNome(nome))
                 .and(PetSpecification.hasEspecie(especie))
                 .and(PetSpecification.hasRaca(raca))
-                .and(PetSpecification.hasPeso(peso));
+                .and(PetSpecification.hasPeso(peso))
+                .and(PetSpecification.hasIdadeBetween(idadeMin, idadeMax));
 
         return repository.findAll(spec, pageable)
                 .map(petMapper::toResponseDTO);

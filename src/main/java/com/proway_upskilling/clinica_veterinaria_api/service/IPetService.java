@@ -12,5 +12,5 @@ public interface IPetService {
     PetResponseDTO update(Long id, PetRequestDTO petDTO);
     void delete(Long id);
     Page<PetResponseDTO> findByCliente(Long clienteId, Pageable pageable);
-    Page<PetResponseDTO> search(String nome, String especie, String raca, Double peso, Pageable pageable);
+    Page<PetResponseDTO> search(String nome, String especie, String raca, Double peso, Double idadeMin, Double idadeMax, Pageable pageable);
 }
