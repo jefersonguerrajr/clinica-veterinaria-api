@@ -9,6 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 public interface ClienteService {
+
+    ResponseEntity<Cliente> findClienteById(long id);
+
     ResponseEntity<Page<Cliente>> searchClientByName(String name, Pageable pageable);
 
     ResponseEntity<Cliente> saveClient(ClienteDTO clientDTO);

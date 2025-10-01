@@ -20,11 +20,25 @@ public class ClienteServiceImpl implements ClienteService {
         this.clienteRepository = userRepository;
     }
 
+    public ResponseEntity<Cliente> findClienteById(long id){
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente com ID " + id + " não encontrado."));
+
+        return ResponseEntity.ok(cliente);
+    }
+
     @Override
     public ResponseEntity<Page<Cliente>> searchClientByName(String name, Pageable pageable){
 
-        Specification<Cliente> clienteSpecification = (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(criteriaBuilder.lower(root.get("nome")), "%" + name.toLowerCase() + "%");
+        Specification<Cliente> clienteSpecification = (root, query, criteriaBuilder) -> {
+            if (name == null || name.trim().isEmpty()) {
+                return criteriaBuilder.conjunction();
+            }
+            return criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("nome")),
+                    "%" + name.toLowerCase() + "%"
+            );
+        };
 
         Page<Cliente> result = clienteRepository.findAll(clienteSpecification, pageable);
 

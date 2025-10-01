@@ -28,6 +28,16 @@ public class ClientController {
         this.clientService = clienteService;
     }
 
+    @GetMapping("/{clientId}")
+    @Operation(summary = "Pesquisar cliente por id", description = "Retorna um cliente cadastrado de acordo com o id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cliente cadastrado"),
+            @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+    })
+    public ResponseEntity<Cliente> searchClientById(@RequestParam(required = false) long id) {
+        return clientService.findClienteById(id);
+    }
+
     @GetMapping
     @Operation(summary = "Pesquisar cliente", description = "Retorna uma lista de todos os clientes cadastrados de acordo com a pesquisa")
     @ApiResponses(value = {
