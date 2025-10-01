@@ -9,14 +9,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class PetMapper {
 
-    public Pet toEntity(PetRequestDTO dto, Cliente dono) {
+    public Pet toEntity(PetRequestDTO dto, Cliente cliente) {
         Pet pet = new Pet();
         pet.setNome(dto.getNome());
         pet.setEspecie(dto.getEspecie());
         pet.setRaca(dto.getRaca());
         pet.setDataNascimento(dto.getDataNascimento());
+        pet.setIdadeAproximada(dto.getIdadeAproximada());
         pet.setPeso(dto.getPeso());
-        pet.setDono(dono);
+        pet.setCliente(cliente);
         return pet;
     }
 
@@ -27,18 +28,20 @@ public class PetMapper {
         dto.setEspecie(pet.getEspecie());
         dto.setRaca(pet.getRaca());
         dto.setDataNascimento(pet.getDataNascimento());
+        dto.setIdade(pet.getIdadeAnosEMeses());
         dto.setPeso(pet.getPeso());
-        dto.setDonoId(pet.getDono() != null ? pet.getDono().getId() : null);
+        dto.setClienteId(pet.getCliente() != null ? pet.getCliente().getId() : null);
         return dto;
     }
 
-    public static void updateEntity(Pet pet, PetRequestDTO dto, Cliente dono) {
+    public static void updateEntity(Pet pet, PetRequestDTO dto, Cliente cliente) {
         pet.setNome(dto.getNome());
         pet.setEspecie(dto.getEspecie());
         pet.setRaca(dto.getRaca());
         pet.setDataNascimento(dto.getDataNascimento());
+        pet.setIdadeAproximada(dto.getIdadeAproximada());
         pet.setPeso(dto.getPeso());
-        pet.setDono(dono);
+        pet.setCliente(cliente);
     }
 
 }
