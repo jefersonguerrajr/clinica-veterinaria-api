@@ -32,7 +32,7 @@ public class Cliente {
     @Column(name = "address")
     private String endereco;
 
-    @OneToMany(mappedBy = "dono", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> pets;
 
 }
