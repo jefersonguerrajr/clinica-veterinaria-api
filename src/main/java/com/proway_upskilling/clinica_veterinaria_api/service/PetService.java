@@ -5,7 +5,7 @@ import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface IPetService {
+public interface PetService {
     PetResponseDTO create(PetRequestDTO petDTO);
     PetResponseDTO findById(Long id);
     Page<PetResponseDTO> findAll(Pageable pageable);

@@ -1,4 +1,4 @@
-package com.proway_upskilling.clinica_veterinaria_api.service;
+package com.proway_upskilling.clinica_veterinaria_api.model.mapper;
 
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetRequestDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;

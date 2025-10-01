@@ -5,6 +5,7 @@ import com.proway_upskilling.clinica_veterinaria_api.model.Cliente;
 import com.proway_upskilling.clinica_veterinaria_api.model.Pet;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetRequestDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;
+import com.proway_upskilling.clinica_veterinaria_api.model.mapper.PetMapper;
 import com.proway_upskilling.clinica_veterinaria_api.repository.ClienteRepository;
 import com.proway_upskilling.clinica_veterinaria_api.repository.PetRepository;
 import com.proway_upskilling.clinica_veterinaria_api.specification.PetSpecification;
@@ -14,7 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PetServiceImpl implements IPetService {
+public class PetServiceImpl implements PetService {
 
     private final PetRepository repository;
     private final ClienteRepository clienteRepository;
