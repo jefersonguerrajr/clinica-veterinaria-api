@@ -3,7 +3,7 @@ package com.proway_upskilling.clinica_veterinaria_api.controller;
 import com.proway_upskilling.clinica_veterinaria_api.controller.docs.IPetControllerDocs;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetRequestDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;
-import com.proway_upskilling.clinica_veterinaria_api.service.IPetService;
+import com.proway_upskilling.clinica_veterinaria_api.service.PetService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/pet")
 public class PetController implements IPetControllerDocs {
 
-    private final IPetService service;
+    private final PetService service;
 
-    public PetController(IPetService service) {
+    public PetController(PetService service) {
         this.service = service;
     }
 
