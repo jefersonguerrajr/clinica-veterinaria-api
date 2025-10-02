@@ -1,8 +1,10 @@
 package com.proway_upskilling.clinica_veterinaria_api.controller;
 
 import com.proway_upskilling.clinica_veterinaria_api.controller.docs.IPetControllerDocs;
+import com.proway_upskilling.clinica_veterinaria_api.model.Consulta;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetRequestDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;
+import com.proway_upskilling.clinica_veterinaria_api.service.ConsultaService;
 import com.proway_upskilling.clinica_veterinaria_api.service.PetService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -11,10 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pet")
@@ -22,8 +23,11 @@ public class PetController implements IPetControllerDocs {
 
     private final PetService service;
 
-    public PetController(PetService service) {
+    private final ConsultaService consultaService;
+
+    public PetController(PetService service, ConsultaService consultaService) {
         this.service = service;
+        this.consultaService = consultaService;
     }
 
     @Override
@@ -72,6 +76,12 @@ public class PetController implements IPetControllerDocs {
         Sort.Direction direction = Sort.Direction.fromString(sortParams[1]);
         String sortBy = sortParams[0];
         return PageRequest.of(page, size, Sort.by(direction, sortBy));
+    }
+
+    @GetMapping("/{petId}/consultas")
+    public ResponseEntity<List<Consulta>> listarConsultasDoPet(@PathVariable Long petId) {
+        List<Consulta> consultas = consultaService.buscarConsultasPorPetId(petId);
+        return ResponseEntity.ok(consultas);
     }
 
 }

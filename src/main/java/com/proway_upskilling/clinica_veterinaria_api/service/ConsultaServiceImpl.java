@@ -103,4 +103,9 @@ public class ConsultaServiceImpl implements ConsultaService {
                 .nomeVeterinario(c.getVeterinario() != null ? c.getVeterinario().getNome() : null)
                 .build();
     }
+
+    @Override
+    public List<Consulta> buscarConsultasPorPetId(Long petId) {
+        return consultaRepository.findByPetId(petId);
+    }
 }
