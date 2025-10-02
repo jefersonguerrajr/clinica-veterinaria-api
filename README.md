@@ -1,3 +1,5 @@
+[![Java CI with Maven](https://github.com/jefersonguerrajr/clinica-veterinaria-api/actions/workflows/maven.yml/badge.svg?branch=develop)](https://github.com/jefersonguerrajr/clinica-veterinaria-api/actions/workflows/maven.yml)
+
 # clinica-veterinaria-api
 Api da clínica veterinária.
 
