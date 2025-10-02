@@ -4,12 +4,15 @@ import com.proway_upskilling.clinica_veterinaria_api.controller.docs.IPetControl
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetRequestDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;
 import com.proway_upskilling.clinica_veterinaria_api.service.PetService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,13 +27,13 @@ public class PetController implements IPetControllerDocs {
     }
 
     @Override
-    public ResponseEntity<PetResponseDTO> create(PetRequestDTO dto) {
+    public ResponseEntity<PetResponseDTO> create(@Valid @RequestBody PetRequestDTO dto) {
         PetResponseDTO response = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
-    public ResponseEntity<PetResponseDTO> getById(Long id) {
+    public ResponseEntity<PetResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -41,18 +44,18 @@ public class PetController implements IPetControllerDocs {
     }
 
     @Override
-    public ResponseEntity<PetResponseDTO> update(Long id, PetRequestDTO dto) {
+    public ResponseEntity<PetResponseDTO> update(@PathVariable Long id, @Valid @RequestBody PetRequestDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
     @Override
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<Page<PetResponseDTO>> getAllByCliente(Long clienteId, int page, int size, String sort){
+    public ResponseEntity<Page<PetResponseDTO>> getAllByCliente(@PathVariable Long clienteId, int page, int size, String sort){
         Pageable pageable = buildPageable(page, size, sort);
         return ResponseEntity.ok(service.findByCliente(clienteId,pageable));
     }
