@@ -1,5 +1,8 @@
 package com.proway_upskilling.clinica_veterinaria_api.model.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.proway_upskilling.clinica_veterinaria_api.validation.annotation.PetIdadeExclusive;
+import com.proway_upskilling.clinica_veterinaria_api.validation.deserializer.LocalDateDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +14,7 @@ import java.time.LocalDate;
 
 @Data
 @Schema(description = "Dados do Pet")
+@PetIdadeExclusive
 public class PetRequestDTO {
 
     @NotBlank(message = "Nome é obrigatório")
@@ -25,12 +29,13 @@ public class PetRequestDTO {
     @Schema(description = "Raça do pet", example = "Labrador", required = true)
     private String raca;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @Past(message = "Data de nascimento deve ser no passado")
-    @Schema(description = "Data de nascimento do pet", example = "2021-05-20")
+    @Schema(description = "Data de nascimento do pet", example = "2021-05-20", type = "string", format = "date", nullable = true)
     private LocalDate dataNascimento;
 
     @Positive(message = "Idade aproximada deve ser maior que zero")
-    @Schema(description = "Idade aproximada em anos (ex: 0.5 = 6 meses)", example = "1.4")
+    @Schema(description = "Idade aproximada em anos (ex: 0.5 = 6 meses)", example = "1.4", nullable = true)
     private Double idadeAproximada;
 
     @NotNull(message = "Peso é obrigatório")
@@ -41,23 +46,6 @@ public class PetRequestDTO {
     @NotNull(message = "ID do cliente é obrigatório")
     @Schema(description = "ID do tutor/cliente do pet", example = "1", required = true)
     private Long clienteId;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

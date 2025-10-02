@@ -27,7 +27,7 @@ public interface IPetControllerDocs {
             @ApiResponse(responseCode = "200", description = "Pet encontrado"),
             @ApiResponse(responseCode = "404", description = "Pet não encontrado")
     })
-    ResponseEntity<PetResponseDTO> getById(@Valid @PathVariable Long id);
+    ResponseEntity<PetResponseDTO> getById(@PathVariable Long id);
 
     @GetMapping
     @Operation(summary = "Listar todos os pets com paginação")
