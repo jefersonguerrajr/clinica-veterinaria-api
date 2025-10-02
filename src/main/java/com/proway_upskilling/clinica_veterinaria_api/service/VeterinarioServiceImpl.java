@@ -30,6 +30,7 @@ public class VeterinarioServiceImpl implements VeterinarioService {
                 .crmv(veterinario.getCrmv())
                 .nome(veterinario.getNome())
                 .dataContratacao(veterinario.getDataContratacao())
+                .consultas(veterinario.getConsultas())
                 .build();
     }
 
@@ -40,6 +41,7 @@ public class VeterinarioServiceImpl implements VeterinarioService {
                 .crmv(dto.getCrmv())
                 .nome(dto.getNome())
                 .dataContratacao(dto.getDataContratacao())
+                .consultas(dto.getConsultas())
                 .build();
     }
 
@@ -76,8 +78,17 @@ public class VeterinarioServiceImpl implements VeterinarioService {
     }
 
     @Override
-    public VeterinarioDTO save(VeterinarioDTO veterinarioDTO) {
-        return toDto(repository.save(toEntity(veterinarioDTO)));
+    public VeterinarioDTO save(long id, VeterinarioDTO veterinarioDTO) {
+
+        Veterinario veterinario = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Veterinário com ID %s não encontrado!", id)));
+
+        if (veterinarioDTO.getNome() != null) veterinario.setNome(veterinarioDTO.getNome());
+        if (veterinarioDTO.getEspecialiade() != null) veterinario.setEspecialidade(veterinarioDTO.getEspecialiade());
+        if (veterinarioDTO.getCrmv() != null) veterinario.setCrmv(veterinarioDTO.getCrmv());
+        if (veterinarioDTO.getDataContratacao() != null) veterinario.setDataContratacao(veterinarioDTO.getDataContratacao());
+
+        return toDto(repository.save(veterinario));
     }
 
     @Override

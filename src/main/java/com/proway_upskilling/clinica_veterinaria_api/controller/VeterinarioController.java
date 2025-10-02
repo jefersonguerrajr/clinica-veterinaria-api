@@ -56,7 +56,7 @@ public class VeterinarioController {
     }
 
     @GetMapping("/contratacaoAPartirDe")
-    @Operation(summary = "Pesquisar veterinários por data de contratação", description = "Retorna veterinários contratados a partir da data informada")
+    @Operation(summary = "Pesquisar veterinários a partir da data de contratação", description = "Retorna veterinários contratados a partir da data informada")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Veterinários encontrados com sucesso"),
             @ApiResponse(responseCode = "500", description = "Erro interno ao buscar veterinários")
@@ -95,7 +95,7 @@ public class VeterinarioController {
             )
     })
     public ResponseEntity<VeterinarioDTO> update(@PathVariable Long id, @Valid @RequestBody VeterinarioDTO dto) {
-        return ResponseEntity.ok(service.save(dto));
+        return ResponseEntity.ok(service.save(id, dto));
     }
 
     @DeleteMapping("/{id}")

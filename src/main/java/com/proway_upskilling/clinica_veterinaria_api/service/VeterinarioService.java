@@ -16,7 +16,7 @@ public interface VeterinarioService {
 
     VeterinarioDTO findById(long id);
 
-    VeterinarioDTO save(VeterinarioDTO veterinarioDTO);
+    VeterinarioDTO save(long id, VeterinarioDTO veterinarioDTO);
 
     Page<VeterinarioDTO> filterVeterinarios(String nome, String especialidade, String crmv, LocalDate dataContratacao, Pageable page);
 

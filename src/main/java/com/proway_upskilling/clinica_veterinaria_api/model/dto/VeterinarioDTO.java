@@ -1,5 +1,6 @@
 package com.proway_upskilling.clinica_veterinaria_api.model.dto;
 
+import com.proway_upskilling.clinica_veterinaria_api.model.Consulta;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -30,4 +32,6 @@ public class VeterinarioDTO {
     private String crmv;
 
     private LocalDate dataContratacao;
+
+    private List<Consulta> consultas;
 }
