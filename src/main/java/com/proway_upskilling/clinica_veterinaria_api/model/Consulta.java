@@ -1,6 +1,8 @@
 package com.proway_upskilling.clinica_veterinaria_api.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,10 +26,12 @@ public class Consulta {
 
     @ManyToOne
     @JoinColumn(name = "pet_id", nullable = false)
+    @JsonIgnore
     private Pet pet;
 
     @ManyToOne
     @JoinColumn(name = "veterinario_id", nullable = false)
+    @JsonIgnoreProperties("consultas")
     private Veterinario veterinario;
 
     @Column(length = 150, nullable = false)

@@ -16,4 +16,6 @@ public interface ConsultaService {
     void deletar(Long id);
 
     ConsultaDTO toDto(Consulta c);
+
+    List<Consulta> buscarConsultasPorPetId(Long petId);
 }
