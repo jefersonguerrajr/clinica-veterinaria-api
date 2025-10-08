@@ -58,7 +58,7 @@ public class PetServiceImpl implements PetService {
         Cliente cliente = clienteRepository.findById(petDTO.getClienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
-        PetMapper.updateEntity(pet, petDTO, cliente);
+        petMapper.updateEntity(pet, petDTO, cliente);
         Pet updatedPet = repository.save(pet);
         return petMapper.toResponseDTO(updatedPet);
     }
@@ -89,4 +89,5 @@ public class PetServiceImpl implements PetService {
                 .map(petMapper::toResponseDTO);
 
     }
+
 }
