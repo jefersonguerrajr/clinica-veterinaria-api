@@ -2,9 +2,8 @@ name: Deploy to Azure Container App
 
 on:
   push:
-    branches:
-      - main
-      - staging
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   deploy:
