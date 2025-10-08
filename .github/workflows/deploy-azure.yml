@@ -21,4 +21,16 @@ jobs:
             --name clinica-veterinaria-api \
             --resource-group grupo-ad \
             --image ghcr.io/${{ github.repository }}:${{ github.sha }}
-    
+
+          APP_URL=$(az containerapp show \
+            --name clinica-veterinaria-api \
+            --resource-group grupo-ad \
+            --query properties.configuration.ingress.fqdn \
+            --output tsv)
+
+          if [ -z "$APP_URL" ]; then
+            echo "Nenhuma URL pública configurada para este Container App."
+          else
+            echo "Aplicação disponível em: https://$APP_URL"
+            echo "app-url=https://$APP_URL" >> $GITHUB_OUTPUT
+          fi
