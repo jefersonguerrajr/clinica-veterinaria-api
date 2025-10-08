@@ -18,9 +18,11 @@ public class JwtUtil {
     private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long expiration = 1000 * 60 * 60; // 1 hora
 
-    public String generateToken(String crmv) {
+
+    public String generateToken(String crmv, Long veterinarioId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("crmv", crmv);
+        claims.put("veterinario_id", veterinarioId);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -30,6 +32,7 @@ public class JwtUtil {
                 .signWith(secretKey)
                 .compact();
     }
+
 
     public boolean isTokenValid(String token) {
         try {
@@ -50,4 +53,12 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+
+    public Long extractVeterinarioId(String token) {
+        Claims claims = extractAllClaims(token);
+        Object id = claims.get("veterinario_id");
+        return id != null ? Long.parseLong(id.toString()) : null;
+    }
+
 }

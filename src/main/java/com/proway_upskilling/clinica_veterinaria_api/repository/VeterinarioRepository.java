@@ -20,5 +20,5 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long>,
 
     Page<Veterinario> findVeterinarioByDataContratacaoGreaterThanEqual(@NonNull LocalDate dataContratacao, Pageable pageable);
 
-    Optional<Veterinario> findByCrmv(String crmv);
+    Veterinario findByCrmv(String crmv);
 }
