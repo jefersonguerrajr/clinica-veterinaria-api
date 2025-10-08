@@ -9,6 +9,8 @@ import com.proway_upskilling.clinica_veterinaria_api.repository.ConsultaReposito
 import com.proway_upskilling.clinica_veterinaria_api.repository.PetRepository;
 import com.proway_upskilling.clinica_veterinaria_api.repository.VeterinarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -89,6 +91,13 @@ public class ConsultaServiceImpl implements ConsultaService {
         }
         consultaRepository.deleteById(id);
     }
+
+    @Override
+    public Page<ConsultaDTO> buscarConsultasPorPetId(Long petId, Pageable pageable) {
+        Page<Consulta> consultas = consultaRepository.findByPetId(petId, pageable);
+        return consultas.map(this::toDto);
+    }
+
     @Override
     public ConsultaDTO toDto(Consulta c) {
         return ConsultaDTO.builder()
@@ -104,8 +113,5 @@ public class ConsultaServiceImpl implements ConsultaService {
                 .build();
     }
 
-    @Override
-    public List<Consulta> buscarConsultasPorPetId(Long petId) {
-        return consultaRepository.findByPetId(petId);
-    }
+
 }

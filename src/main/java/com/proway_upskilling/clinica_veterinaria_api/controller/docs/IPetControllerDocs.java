@@ -1,16 +1,19 @@
 package com.proway_upskilling.clinica_veterinaria_api.controller.docs;
 
+import com.proway_upskilling.clinica_veterinaria_api.model.dto.ConsultaDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetRequestDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Pets", description = "Endpoints para gerenciamento de pets")
 public interface IPetControllerDocs {
 
     @PostMapping
@@ -34,12 +37,10 @@ public interface IPetControllerDocs {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de pets retornada com sucesso")
     })
-    ResponseEntity<Page<PetResponseDTO>> getAll(@Parameter(description = "Número da página (começa em 0)", example = "0")
-                                                @RequestParam(defaultValue = "0") int page,
-                                                @Parameter(description = "Tamanho da página", example = "10")
-                                                @RequestParam(defaultValue = "10") int size,
-                                                @Parameter(description = "Ordenação no formato: campo,asc|desc", example = "id,asc")
-                                                @RequestParam(defaultValue = "id,asc") String sort
+    ResponseEntity<Page<PetResponseDTO>> getAll(
+            @Parameter(description = "Número da página (começa em 0)", example = "0") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Tamanho da página", example = "10") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Ordenação no formato: campo,asc|desc", example = "id,asc") @RequestParam(defaultValue = "id,asc") String sort
     );
 
     @PutMapping("/{id}")
@@ -61,16 +62,21 @@ public interface IPetControllerDocs {
 
     @GetMapping("/cliente/{clienteId}")
     @Operation(summary = "Listar pets de um cliente")
-    ResponseEntity<Page<PetResponseDTO>> getAllByCliente(@PathVariable Long clienteId,
-                                                         @Parameter(description = "Número da página (começa em 0)", example = "0")
-                                                         @RequestParam(defaultValue = "0") int page,
-                                                         @Parameter(description = "Tamanho da página", example = "10")
-                                                         @RequestParam(defaultValue = "10") int size,
-                                                         @Parameter(description = "Ordenação no formato: campo,asc|desc", example = "id,asc")
-                                                         @RequestParam(defaultValue = "id,asc") String sort);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de pets retornada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+    })
+    ResponseEntity<Page<PetResponseDTO>> getAllByCliente(
+            @PathVariable Long clienteId,
+            @Parameter(description = "Número da página (começa em 0)", example = "0") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Tamanho da página", example = "10") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Ordenação no formato: campo,asc|desc", example = "id,asc") @RequestParam(defaultValue = "id,asc") String sort);
 
     @GetMapping("/search")
     @Operation(summary = "Buscar pets por filtros (nome, espécie, raça, peso, idade)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso")
+    })
     ResponseEntity<Page<PetResponseDTO>> searchPets(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String especie,
@@ -78,12 +84,23 @@ public interface IPetControllerDocs {
             @RequestParam(required = false) Double peso,
             @RequestParam(required = false) Double idadeMin,
             @RequestParam(required = false) Double idadeMax,
-            @Parameter(description = "Número da página (começa em 0)", example = "0")
-            @RequestParam(defaultValue = "0") int page,
-            @Parameter(description = "Tamanho da página", example = "10")
-            @RequestParam(defaultValue = "10") int size,
-            @Parameter(description = "Ordenação no formato: campo,asc|desc", example = "id,asc")
-            @RequestParam(defaultValue = "id,asc") String sort
+            @Parameter(description = "Número da página (começa em 0)", example = "0") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Tamanho da página", example = "10") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Ordenação no formato: campo,asc|desc", example = "id,asc") @RequestParam(defaultValue = "id,asc") String sort
+    );
+
+    @GetMapping(value = "/{petId}/consultas")
+    @Operation(summary = "Listar consultas de um pet específico com paginação",
+            description = "Retorna uma página com as consultas associadas ao pet informado pelo ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Consultas retornadas com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Pet não encontrado")
+    })
+    ResponseEntity<Page<ConsultaDTO>> getConsultasByPet(
+            @PathVariable Long petId,
+            @Parameter(description = "Número da página (começa em 0)", example = "0") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Tamanho da página", example = "10") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Ordenação no formato: campo,asc|desc", example = "id,asc") @RequestParam(defaultValue = "id,asc") String sort
     );
 
 }

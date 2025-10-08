@@ -2,7 +2,8 @@ package com.proway_upskilling.clinica_veterinaria_api.service;
 
 import com.proway_upskilling.clinica_veterinaria_api.model.Consulta;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.ConsultaDTO;
-import com.proway_upskilling.clinica_veterinaria_api.repository.ConsultaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,6 @@ public interface ConsultaService {
     List<ConsultaDTO> listarTodas();
     ConsultaDTO atualizar(Long id, ConsultaDTO dto);
     void deletar(Long id);
-
+    Page<ConsultaDTO> buscarConsultasPorPetId(Long petId, Pageable pageable);
     ConsultaDTO toDto(Consulta c);
-
-    List<Consulta> buscarConsultasPorPetId(Long petId);
 }
