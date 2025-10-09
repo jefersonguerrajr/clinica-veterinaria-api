@@ -25,15 +25,26 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build
-        run: mvn clean package -DskipTests
-
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        
+      - name: Build clinica-veterinaria-api
+        working-directory: ./clinica-veterinaria-api
+        run: mvn clean package -DskipTests
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
+        run: docker build -t ghcr.io/clinica-veterinaria-api:${{ github.sha }} .
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+        run: docker push ghcr.io/clinica-veterinaria-api:${{ github.sha }}
+        
+      - name: Build service-email
+        working-directory: ./servico-email
+        run: mvn clean package -DskipTests
+        
+      - name: Build Docker image
+        run: docker build -t ghcr.io/servico-email:${{ github.sha }} .
+
+      - name: Push Docker image
+        run: docker push ghcr.io/servico-email:${{ github.sha }}
         
