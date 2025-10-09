@@ -114,6 +114,6 @@ public class VeterinarioController {
             )
     })
     public ResponseEntity<Message> delete(@PathVariable Long id) {
-        return service.delete(id);
+        return ResponseEntity.ok(service.delete(id));
     }
 }

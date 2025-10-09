@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Entity
 @Table(name = "consultas")
 @Data
@@ -33,6 +31,11 @@ public class Consulta {
     @JoinColumn(name = "veterinario_id", nullable = false)
     @JsonIgnoreProperties("consultas")
     private Veterinario veterinario;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonIgnore
+    private Cliente cliente;
 
     @Column(length = 150, nullable = false)
     private String motivo;
