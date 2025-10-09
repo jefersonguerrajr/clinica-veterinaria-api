@@ -95,7 +95,7 @@ public class VeterinarioControllerTest {
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.nome").value("Dr. João"))
                 .andExpect(jsonPath("$.crmv").value("CRMV123"))
-                .andExpect(jsonPath("$.especialiade").value("Cirurgião"));
+                .andExpect(jsonPath("$.especialidade").value("Cirurgião"));
 
         verify(service).findById(1L);
     }
@@ -168,7 +168,7 @@ public class VeterinarioControllerTest {
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.nome").value("Dr. João"))
                 .andExpect(jsonPath("$.crmv").value("CRMV123"))
-                .andExpect(jsonPath("$.especialiade").value("Cirurgião"));
+                .andExpect(jsonPath("$.especialidade").value("Cirurgião"));
 
         verify(service).create(any(VeterinarioDTO.class));
 
@@ -179,7 +179,7 @@ public class VeterinarioControllerTest {
         VeterinarioDTO dto = new VeterinarioDTO();
         dto.setNome("Dr. João");
         dto.setCrmv("CRMV123");
-        dto.setEspecialiade( "Cirurgião");
+        dto.setEspecialidade( "Cirurgião");
         dto.setDataContratacao(LocalDate.of(2024, 1, 1));
 
         when(service.create(any(VeterinarioDTO.class)))
@@ -207,7 +207,7 @@ public class VeterinarioControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.nome").value("Carlos Silva"))
-                .andExpect(jsonPath("$.especialiade").value("Cirurgiao"))
+                .andExpect(jsonPath("$.especialidade").value("Cirurgiao"))
                 .andExpect(jsonPath("$.crmv").value("CRMV1234"));
     }
 
@@ -217,7 +217,7 @@ public class VeterinarioControllerTest {
         VeterinarioDTO dto = new VeterinarioDTO();
         dto.setNome("Dr. João");
         dto.setCrmv("CRMV123");
-        dto.setEspecialiade( "Cirurgião");
+        dto.setEspecialidade( "Cirurgião");
         dto.setDataContratacao(LocalDate.of(2024, 1, 1));
 
         when(service.save(eq(id), any(VeterinarioDTO.class)))
@@ -237,7 +237,7 @@ public class VeterinarioControllerTest {
                 .title("Veterinário removido com sucesso.")
                 .build();
 
-        when(service.delete(1L)).thenReturn(ResponseEntity.ok(message));
+        when(service.delete(1L)).thenReturn(message);
 
         mockMvc.perform(delete("/veterinario/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -264,7 +264,7 @@ public class VeterinarioControllerTest {
                 .id(id)
                 .nome(nome)
                 .crmv(crmv)
-                .especialiade(especialidade)
+                .especialidade(especialidade)
                 .dataContratacao(dataContratacao)
                 .build();
     }

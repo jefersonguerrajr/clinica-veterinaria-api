@@ -83,11 +83,11 @@ public class VeterinarioServiceImplTest {
         when(repository.findById(id)).thenReturn(Optional.of(veterinario));
         doNothing().when(repository).delete(veterinario);
 
-        ResponseEntity<Message> response = service.delete(id);
+        Message response = service.delete(id);
 
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Veterinário removido com sucesso.", response.getBody().getTitle());
+
+        assertEquals("Veterinário removido com sucesso.", response.getTitle());
 
         verify(repository).findById(id);
         verify(repository).delete(veterinario);
@@ -260,7 +260,7 @@ public class VeterinarioServiceImplTest {
         return VeterinarioDTO.builder()
                 .id(1L)
                 .nome("Dr. João")
-                .especialiade("Cirurgião")
+                .especialidade("Cirurgião")
                 .crmv("CRMV123")
                 .dataContratacao(LocalDate.of(2024, 1, 1))
                 .build();
