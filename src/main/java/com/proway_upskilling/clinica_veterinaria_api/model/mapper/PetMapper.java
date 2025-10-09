@@ -34,7 +34,7 @@ public class PetMapper {
         return dto;
     }
 
-    public static void updateEntity(Pet pet, PetRequestDTO dto, Cliente cliente) {
+    public void updateEntity(Pet pet, PetRequestDTO dto, Cliente cliente) {
         pet.setNome(dto.getNome());
         pet.setEspecie(dto.getEspecie());
         pet.setRaca(dto.getRaca());
