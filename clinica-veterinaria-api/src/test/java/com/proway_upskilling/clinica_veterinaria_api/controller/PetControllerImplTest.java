@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(PetController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
-public class PetControllerTest {
+public class PetControllerImplTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,8 +60,8 @@ public class PetControllerTest {
 
     @BeforeEach
     void setUp() {
-        petRequestDTOPadrao = criarPetRequestPadrao();
-        petResponseDTOPadrao = criarPetResponsePadrao();
+        petRequestDTOPadrao = createPetRequestPadrao();
+        petResponseDTOPadrao = createPetResponsePadrao();
     }
 
     @Test
@@ -149,9 +149,9 @@ public class PetControllerTest {
 
     @Test
     void shouldReturnPagedListOfPets() throws Exception {
-        PetResponseDTO pet1 = criarPetResponsePadrao();
+        PetResponseDTO pet1 = createPetResponsePadrao();
 
-        PetResponseDTO pet2 = criarPetResponsePadrao();
+        PetResponseDTO pet2 = createPetResponsePadrao();
         pet2.setId(2L);
         pet2.setNome("Mia");
         pet2.setEspecie("Gato");
@@ -189,11 +189,11 @@ public class PetControllerTest {
 
     @Test
     void shouldUpdatePetSuccessfully() throws Exception {
-        PetRequestDTO petRequestAtualizado = criarPetRequestPadrao();
+        PetRequestDTO petRequestAtualizado = createPetRequestPadrao();
         petRequestAtualizado.setNome("Rex");
         petRequestAtualizado.setPeso(15.0);
 
-        PetResponseDTO petResponseAtualizado = criarPetResponsePadrao();
+        PetResponseDTO petResponseAtualizado = createPetResponsePadrao();
         petResponseAtualizado.setNome("Rex");
         petResponseAtualizado.setPeso(15.0);
 
@@ -216,7 +216,7 @@ public class PetControllerTest {
 
     @Test
     void shouldReturnNotFoundWhenUpdatingNonExistentPet() throws Exception {
-        PetRequestDTO petRequestAtualizado = criarPetRequestPadrao();
+        PetRequestDTO petRequestAtualizado = createPetRequestPadrao();
 
         when(petService.update(eq(99L), any(PetRequestDTO.class)))
                 .thenThrow(new ResourceNotFoundException("Pet não encontrado!"));
@@ -248,8 +248,8 @@ public class PetControllerTest {
 
     @Test
     void shouldReturnPagedPetsByCliente() throws Exception {
-        PetResponseDTO pet1 = criarPetResponsePadrao();
-        PetResponseDTO pet2 = criarPetResponsePadrao();
+        PetResponseDTO pet1 = createPetResponsePadrao();
+        PetResponseDTO pet2 = createPetResponsePadrao();
         pet2.setId(2L);
         pet2.setNome("Mel");
         pet2.setClienteId(1L);
@@ -367,7 +367,7 @@ public class PetControllerTest {
         verify(consultaService, times(1)).buscarConsultasPorPetId(eq(petId), any(Pageable.class));
     }
 
-    private PetRequestDTO criarPetRequestPadrao() {
+    private PetRequestDTO createPetRequestPadrao() {
         PetRequestDTO dto = new PetRequestDTO();
         dto.setNome("Fido");
         dto.setEspecie("Cachorro");
@@ -378,7 +378,7 @@ public class PetControllerTest {
         return dto;
     }
 
-    private PetResponseDTO criarPetResponsePadrao() {
+    private PetResponseDTO createPetResponsePadrao() {
         PetResponseDTO dto = new PetResponseDTO();
         dto.setId(1L);
         dto.setNome("Fido");
@@ -388,12 +388,6 @@ public class PetControllerTest {
         dto.setIdade(3.10);
         dto.setDataNascimento(LocalDate.of(2022, 1, 1));
         dto.setClienteId(1L);
-        return dto;
-    }
-
-    private PetRequestDTO criarPetRequestComNome(String nome) {
-        PetRequestDTO dto = criarPetRequestPadrao();
-        dto.setNome(nome);
         return dto;
     }
 
