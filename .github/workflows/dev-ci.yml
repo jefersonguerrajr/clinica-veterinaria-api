@@ -17,5 +17,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
+    - name: Build clinica-veterinaria-api
+      working-directory: ./clinica-veterinaria-api
+      run: mvn -B package --file pom.xml
+      
+    - name: Build servico-email
+      working-directory: ./servico-email
       run: mvn -B package --file pom.xml
