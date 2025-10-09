@@ -31,6 +31,10 @@ https://clinica-veterinaria-api.salmonground-c4514ff0.brazilsouth.azurecontainer
 | `RABBITMQ_PASSWORD`       |                        | Senha                        |
 | `RABBITMQ_QUEUE`          | default.email          | Fila do RabbitMQ             |
 | `RABBITMQ_QUEUE_RESPONSE` | default.email.response | Fila de resposta do RabbitMQ |
+| `DB_HOST`                 | `127.0.0.1`            | Host do banco de dados       |
+| `DB_PORT`                 | `5432`                 | Porta do PostgreSQL          |
+| `DB_USER`                 | `pguser`               | Usuário do banco             |
+| `DB_PASSWORD`             | `12345`                | Senha do banco               |
 
 ### Variáveis de Ambiente para servico-email
 
