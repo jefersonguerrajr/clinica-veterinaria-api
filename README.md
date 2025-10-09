@@ -22,17 +22,33 @@ https://clinica-veterinaria-api.salmonground-c4514ff0.brazilsouth.azurecontainer
 
 ## ⚙️ Configuração
 
-### Variáveis de Ambiente
+### Variáveis de Ambiente para clinica-veterinaria-api
 
-O projeto utiliza as seguintes variáveis de ambiente
+| Variável                  | Valor Padrão           | Descrição                    |
+|---------------------------|------------------------|------------------------------|
+| `SERVER_PORT`             | `1515`                 | Porta do servidor            |
+| `RABBITMQ_USER`           |                        | Usuario do RabbitMQ          |
+| `RABBITMQ_PASSWORD`       |                        | Senha                        |
+| `RABBITMQ_QUEUE`          | default.email          | Fila do RabbitMQ             |
+| `RABBITMQ_QUEUE_RESPONSE` | default.email.response | Fila de resposta do RabbitMQ |
 
-| Variável | Valor Padrão | Descrição |
-|----------|--------------|-----------|
-| `SERVER_PORT` | `1515` | Porta do servidor |
-| `DB_HOST` | `127.0.0.1` | Host do banco de dados |
-| `DB_PORT` | `5432` | Porta do PostgreSQL |
-| `DB_USER` | `pguser` | Usuário do banco |
-| `DB_PASSWORD` | `12345` | Senha do banco |
+### Variáveis de Ambiente para servico-email
+
+| Variável  | Valor Padrão | Descrição                  |
+|--------------|-------------|----------------------------|
+| `RABBITMQ_USER` |             | Usuario do RabbitMQ        |
+| `RABBITMQ_PASSWORD` |             | Senha                      |
+| `RABBITMQ_QUEUE`          | default.email          | Fila do RabbitMQ             |
+| `RABBITMQ_QUEUE_RESPONSE` | default.email.response | Fila de resposta do RabbitMQ |
+| `SMTP_HOST`  |     sandbox.smtp.mailtrap.io        | Host do servidor de e-mail |
+| `SMTP_PORT`  |      2525       | Porta                      |
+| `SMTP_USERNAME` |             | Usuario                    |
+| `SMTP_PASSWORD` |             | Senha                      |
+| `DB_HOST`                 | `127.0.0.1`            | Host do banco de dados       |
+| `DB_PORT`                 | `5432`                 | Porta do PostgreSQL          |
+| `DB_USER`                 | `pguser`               | Usuário do banco             |
+| `DB_PASSWORD`             | `12345`                | Senha do banco               |
+
 
 ## 🚀 Executando o Projeto
 
@@ -48,7 +64,7 @@ cd [nome-do-servico]
 ./mvnw spring-boot:run
 ```
 
-3. Ou execute a aplicação com as variáveis de ambiente personalizadas:
+3. Ou execute a aplicação com as variáveis de ambiente personalizadas seguindo o exemplo abaixo:
 ```bash
 SERVER_PORT=1515 DB_HOST=127.0.0.1 DB_PORT=5432 DB_USER=pguser DB_PASSWORD=12345 ./mvnw spring-boot:run
 ```
