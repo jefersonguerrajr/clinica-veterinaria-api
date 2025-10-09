@@ -1,5 +1,6 @@
 package com.proway_upskilling.clinica_veterinaria_api.service;
 
+import com.proway_upskilling.clinica_veterinaria_api.exception.GlobalExceptionHandler;
 import com.proway_upskilling.clinica_veterinaria_api.exception.ResourceNotFoundException;
 import com.proway_upskilling.clinica_veterinaria_api.model.Cliente;
 import com.proway_upskilling.clinica_veterinaria_api.model.Pet;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@Import(GlobalExceptionHandler.class)
 public class PetServiceImplTest {
 
     @Mock

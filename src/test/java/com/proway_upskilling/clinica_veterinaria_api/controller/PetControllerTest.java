@@ -1,10 +1,13 @@
 package com.proway_upskilling.clinica_veterinaria_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.proway_upskilling.clinica_veterinaria_api.config.SecurityConfig;
+import com.proway_upskilling.clinica_veterinaria_api.exception.GlobalExceptionHandler;
 import com.proway_upskilling.clinica_veterinaria_api.exception.ResourceNotFoundException;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.ConsultaDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetRequestDTO;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.PetResponseDTO;
+import com.proway_upskilling.clinica_veterinaria_api.security.JwtUtil;
 import com.proway_upskilling.clinica_veterinaria_api.service.ConsultaService;
 import com.proway_upskilling.clinica_veterinaria_api.service.PetService;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,8 +36,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PetController.class)
-@AutoConfigureMockMvc
-public class PetControllerImplTest {
+@AutoConfigureMockMvc(addFilters = false)
+@Import({SecurityConfig.class, GlobalExceptionHandler.class})
+public class PetControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,6 +51,9 @@ public class PetControllerImplTest {
 
     @MockBean
     private ConsultaService consultaService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
 
     private PetRequestDTO petRequestDTOPadrao;
     private PetResponseDTO petResponseDTOPadrao;
