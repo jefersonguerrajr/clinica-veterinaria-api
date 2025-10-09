@@ -1,10 +1,13 @@
 package com.proway_upskilling.clinica_veterinaria_api.service;
 
 import com.proway_upskilling.clinica_veterinaria_api.exception.ResourceNotFoundException;
+import com.proway_upskilling.clinica_veterinaria_api.model.Cliente;
 import com.proway_upskilling.clinica_veterinaria_api.model.Consulta;
 import com.proway_upskilling.clinica_veterinaria_api.model.Pet;
 import com.proway_upskilling.clinica_veterinaria_api.model.Veterinario;
 import com.proway_upskilling.clinica_veterinaria_api.model.dto.ConsultaDTO;
+import com.proway_upskilling.clinica_veterinaria_api.producers.ConsultaProducer;
+import com.proway_upskilling.clinica_veterinaria_api.repository.ClienteRepository;
 import com.proway_upskilling.clinica_veterinaria_api.repository.ConsultaRepository;
 import com.proway_upskilling.clinica_veterinaria_api.repository.PetRepository;
 import com.proway_upskilling.clinica_veterinaria_api.repository.VeterinarioRepository;
@@ -24,6 +27,8 @@ public class ConsultaServiceImpl implements ConsultaService {
     private final ConsultaRepository consultaRepository;
     private final PetRepository petRepository;
     private final VeterinarioRepository veterinarioRepository;
+    private final ClienteRepository clienteRepository;
+    private final ConsultaProducer consultaProducer;
 
     @Override
     public ConsultaDTO criarConsulta(ConsultaDTO dto) {
@@ -31,16 +36,22 @@ public class ConsultaServiceImpl implements ConsultaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Pet não encontrado: " + dto.getPetId()));
         Veterinario vet = veterinarioRepository.findById(dto.getVeterinarioId())
                 .orElseThrow(() -> new ResourceNotFoundException("Veterinário não encontrado: " + dto.getVeterinarioId()));
+        Cliente cliente = clienteRepository.findById(dto.getClienteId())
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado: " + dto.getClienteId()));
 
         Consulta consulta = new Consulta();
         consulta.setPet(pet);
         consulta.setVeterinario(vet);
+        consulta.setCliente(cliente);
         consulta.setMotivo(dto.getMotivo());
         consulta.setDiagnostico(dto.getDiagnostico());
         consulta.setTratamento(dto.getTratamento());
         consulta.setStatus(dto.getStatus());
 
         consulta = consultaRepository.save(consulta);
+
+        consultaProducer.enviarEmailConfirmacaoConsulta(consulta);
+
         return toDto(consulta);
     }
 
@@ -75,6 +86,12 @@ public class ConsultaServiceImpl implements ConsultaService {
             consulta.setVeterinario(vet);
         }
 
+        if (dto.getClienteId() != null && !dto.getClienteId().equals(consulta.getCliente().getId())) {
+            Cliente cliente = clienteRepository.findById(dto.getClienteId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado: " + dto.getClienteId()));
+            consulta.setCliente(cliente);
+        }
+
         consulta.setMotivo(dto.getMotivo());
         consulta.setDiagnostico(dto.getDiagnostico());
         consulta.setTratamento(dto.getTratamento());
@@ -104,6 +121,7 @@ public class ConsultaServiceImpl implements ConsultaService {
                 .id(c.getId())
                 .petId(c.getPet() != null ? c.getPet().getId() : null)
                 .veterinarioId(c.getVeterinario() != null ? c.getVeterinario().getId() : null)
+                .clienteId(c.getCliente() != null ? c.getCliente().getId() : null)
                 .motivo(c.getMotivo())
                 .diagnostico(c.getDiagnostico())
                 .tratamento(c.getTratamento())
@@ -112,6 +130,4 @@ public class ConsultaServiceImpl implements ConsultaService {
                 .nomeVeterinario(c.getVeterinario() != null ? c.getVeterinario().getNome() : null)
                 .build();
     }
-
-
 }

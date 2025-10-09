@@ -9,7 +9,6 @@ import com.proway_upskilling.clinica_veterinaria_api.specification.VeterinarioSp
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,7 +25,7 @@ public class VeterinarioServiceImpl implements VeterinarioService {
     private VeterinarioDTO toDto(Veterinario veterinario) {
         return VeterinarioDTO.builder()
                 .id(veterinario.getId())
-                .especialiade(veterinario.getEspecialidade())
+                .especialidade(veterinario.getEspecialidade())
                 .crmv(veterinario.getCrmv())
                 .nome(veterinario.getNome())
                 .dataContratacao(veterinario.getDataContratacao())
@@ -37,7 +36,7 @@ public class VeterinarioServiceImpl implements VeterinarioService {
     private Veterinario toEntity(VeterinarioDTO dto) {
         return Veterinario.builder()
                 .id(dto.getId())
-                .especialidade(dto.getEspecialiade())
+                .especialidade(dto.getEspecialidade())
                 .crmv(dto.getCrmv())
                 .nome(dto.getNome())
                 .dataContratacao(dto.getDataContratacao())
@@ -58,14 +57,14 @@ public class VeterinarioServiceImpl implements VeterinarioService {
     }
 
     @Override
-    public ResponseEntity<Message> delete(long id) {
+    public Message delete(long id) {
 
         Veterinario veterinario = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Veterinário com ID %s não encontrado!", id)));
 
         repository.delete(veterinario);
 
-        return ResponseEntity.ok(Message.builder().title("Veterinário removido com sucesso.").build());
+        return Message.builder().title("Veterinário removido com sucesso.").build();
     }
 
     @Override
@@ -84,9 +83,10 @@ public class VeterinarioServiceImpl implements VeterinarioService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Veterinário com ID %s não encontrado!", id)));
 
         if (veterinarioDTO.getNome() != null) veterinario.setNome(veterinarioDTO.getNome());
-        if (veterinarioDTO.getEspecialiade() != null) veterinario.setEspecialidade(veterinarioDTO.getEspecialiade());
+        if (veterinarioDTO.getEspecialidade() != null) veterinario.setEspecialidade(veterinarioDTO.getEspecialidade());
         if (veterinarioDTO.getCrmv() != null) veterinario.setCrmv(veterinarioDTO.getCrmv());
-        if (veterinarioDTO.getDataContratacao() != null) veterinario.setDataContratacao(veterinarioDTO.getDataContratacao());
+        if (veterinarioDTO.getDataContratacao() != null)
+            veterinario.setDataContratacao(veterinarioDTO.getDataContratacao());
 
         return toDto(repository.save(veterinario));
     }
