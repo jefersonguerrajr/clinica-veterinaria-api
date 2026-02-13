@@ -25,6 +25,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
         
@@ -32,19 +33,21 @@ jobs:
         working-directory: ./clinica-veterinaria-api
         run: mvn clean package -DskipTests
 
-      - name: Build Docker image
-        run: docker build -t ghcr.io/clinica-veterinaria-api:${{ github.sha }} .
+      - name: Build Docker image (clinica-veterinaria-api)
+        working-directory: ./clinica-veterinaria-api
+        run: docker build -t ghcr.io/${{ github.actor }}/clinica-veterinaria-api:${{ github.sha }} .
 
-      - name: Push Docker image
-        run: docker push ghcr.io/clinica-veterinaria-api:${{ github.sha }}
+      - name: Push Docker image (clinica-veterinaria-api)
+        run: docker push ghcr.io/${{ github.actor }}/clinica-veterinaria-api:${{ github.sha }}
         
       - name: Build service-email
         working-directory: ./servico-email
         run: mvn clean package -DskipTests
         
-      - name: Build Docker image
-        run: docker build -t ghcr.io/servico-email:${{ github.sha }} .
+      - name: Build Docker image (servico-email)
+        working-directory: ./servico-email
+        run: docker build -t ghcr.io/${{ github.actor }}/servico-email:${{ github.sha }} .
 
-      - name: Push Docker image
-        run: docker push ghcr.io/servico-email:${{ github.sha }}
+      - name: Push Docker image (servico-email)
+        run: docker push ghcr.io/${{ github.actor }}/servico-email:${{ github.sha }}
         
